@@ -1,4 +1,4 @@
-# Jazz Jackrabbit 2 .j2l Map Password Protection Remover
+# j2l_tool - Jazz Jackrabbit 2 .j2l Map Password Protection Remover
 
 ## j2l_tool.py
 
