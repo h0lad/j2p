@@ -40,6 +40,11 @@ offset  size  field            passworded
 
 ## Password hash
 
+Thanks to the nature of CRC-32 is very easy to find collisions.. so no need to bruteforce the original password.
+
+The table is build (RVA 0x4AF9C0) using polynomial `0xEDB88320`.
+
+
 ```
 hash = crc32(password, seed=0) & 0x00FFFFFF
 ```
@@ -53,13 +58,6 @@ byte[0xBA] = hash & 0xFF
 ```
 
 Pattern `0x00BABE` (bytes `BE BA 00`) = no password.
-
-## CRC-32
-
-Thanks to the nature of CRC-32 is very easy to find collisions.. so no need to bruteforce the original password.
-
-The table is build (RVA 0x4AF9C0) using polynomial `0xEDB88320`.
-
 
 ## References
 
