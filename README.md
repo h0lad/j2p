@@ -1,6 +1,21 @@
-# Jazz Jackrabbit 2 .j2l Password Protection
+# Jazz Jackrabbit 2 .j2l Map Password Protection Remover
 
-## File format
+## j2l_tool.py
+
+```
+j2l_tool - Jazz Jackrabbit 2 .j2l password tool.
+
+  j2l_tool.py info   <file>              password status
+  j2l_tool.py strip  <file> [out]        remove password (use - for stdout)
+  j2l_tool.py set    <pw> <file> [out]   set password
+  j2l_tool.py hash   <pw>                compute hash
+  j2l_tool.py coll   <file>              find colliding password
+  j2l_tool.py pass   <file>              show stored hash hex
+```
+
+## Description
+
+### File format
 
 262-byte header followed by 4 zlib-compressed blocks (Data1-4).
 
@@ -25,7 +40,7 @@ offset  size  field
 0x106   var   Data1 (zlib)
 ```
 
-## Data1 security markers
+### Data1 security markers
 
 ```
 offset  size  field            passworded
@@ -38,7 +53,7 @@ offset  size  field            passworded
 0x0A    1     StartLight
 ```
 
-## Password hash
+### Password hash
 
 Thanks to the nature of CRC-32 is very easy to find collisions.. so no need to bruteforce the original password.
 
@@ -59,7 +74,7 @@ byte[0xBA] = hash & 0xFF
 
 Pattern `0x00BABE` (bytes `BE BA 00`) = no password.
 
-## References
+### References
 
 ```
 RVA        description
@@ -72,7 +87,7 @@ RVA        description
 0x46375E   EM_SETPASSWORDCHAR
 ```
 
-## Password check flow
+### Password check flow
 
 1. Read 3 bytes header[0xB8..0xBA] as big-endian 24-bit integer.
 2. If == 0x00BABE: no password -> load level.
@@ -81,7 +96,7 @@ RVA        description
 5. Hash entered password: `crc32(pw_bytes, 0) & 0xFFFFFF`.
 6. Compare: mismatch -> "password incorrect".
 
-## Removing protection
+### Removing protection
 
 1. Header[0xB8..0xBA] = `BE BA 00`.
 2. Data1[2:4] = `00 00`.
